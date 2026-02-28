@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Zall DM</title>
+
+<style>
+body{
+  margin:0;
+  background:#000;
+  font-family:Arial;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  color:white;
+}
+
+.container{
+  width:380px;
+  height:650px;
+  background:#111;
+  border-radius:25px;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  box-shadow:0 0 30px rgba(0,0,0,0.8);
+}
+
+.header{
+  background:#000;
+  padding:15px;
+  display:flex;
+  align-items:center;
+  border-bottom:1px solid #222;
+}
+
+.avatar{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  margin-right:10px;
+}
+
+.name{
+  font-weight:bold;
+}
+
+.status{
+  font-size:12px;
+  color:#0f0;
+}
+
+.chat{
+  flex:1;
+  padding:15px;
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
+}
+
+.bubble{
+  max-width:70%;
+  padding:10px 15px;
+  border-radius:20px;
+  margin-bottom:10px;
+  font-size:14px;
+}
+
+.user{
+  align-self:flex-end;
+  background:#3797f0;
+}
+
+.ai{
+  align-self:flex-start;
+  background:#262626;
+}
+
+.input-area{
+  display:flex;
+  border-top:1px solid #222;
+}
+
+input{
+  flex:1;
+  padding:15px;
+  background:#000;
+  border:none;
+  color:white;
+  outline:none;
+}
+
+button{
+  padding:15px;
+  background:#000;
+  border:none;
+  color:#3797f0;
+  font-weight:bold;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+  <img class="avatar" src="https://www.google.com/search?client=ms-android-samsung-ga-rev1&hs=wtQp&sca_esv=76b06d951a8081e0&sxsrf=ANbL-n5HoTVLVljbqnDMXf2_vM_Zk0f-fg:1772253646290&udm=2&fbs=ADc_l-afYCCvZGLTTJB39q762fTE5ejCh73yVtxppSsoIW3nvJ2F2-q0GR5ZdU1SrsQp1tNOUzTxFFmLGUzqjQ7j47pXIEr0gG8KvAsbWkhXRm6q5XchDKDKsKPWZ9-wP2YlS5gQWBENL-vTFraQic0omu3rjSt9VGbvw2N-2qhyjstKmwCV7LSfwmk8zECq2lbekefpkcJ4WQdnGc04gf0I_AnK3IBecuu7Giuc_Mo-yAiAl8FoY5c&q=ai+girl+sexs&sa=X&ved=2ahUKEwj40aeor_uSAxVSZWwGHUZ1NKEQtKgLegQIFhAB&biw=501&bih=976&dpr=2.16#sv=CAMSURoyKhBlLWs1eVIzd1VnVTl0VnVNMg5rNXlSM3dVZ1U5dFZ1TToOanN5bzIycENlRkUxQk0gBCoXCgFzEhBlLWs1eVIzd1VnVTl0VnVNGAEwARgHIPeNsKsPMAFKCBACGAIgAigC">
+  <div>
+    <div class="name">karina</div>
+    <div class="status">online</div>
+  </div>
+</div>
+
+<div class="chat" id="chat"></div>
+
+<div class="input-area">
+  <input type="text" id="input" placeholder="Ketik pesan..." onkeypress="if(event.key==='Enter') send()">
+  <button onclick="send()">Kirim</button>
+</div>
+
+</div>
+
+<script>
+
+function addMessage(text,type){
+  const chat=document.getElementById("chat");
+  const msg=document.createElement("div");
+  msg.classList.add("bubble",type);
+  msg.innerText=text;
+  chat.appendChild(msg);
+  chat.scrollTop=chat.scrollHeight;
+}
+
+function send(){
+  let input=document.getElementById("input");
+  let text=input.value.trim();
+  if(!text) return;
+
+  addMessage(text,"user");
+  input.value="";
+
+  setTimeout(()=>{
+    let reply=aiReply(text);
+    addMessage(reply,"ai");
+  },600);
+}
+
+function shuffle(array){
+  for(let i = array.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function showTyping(){
+  const chat = document.getElementById("chat");
+
+  const typing = document.createElement("div");
+  typing.classList.add("typing");
+  typing.id = "typing-indicator";
+  typing.innerText = "karina sedang mengetik...";
+  
+  chat.appendChild(typing);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function removeTyping(){
+  const typing = document.getElementById("typing-indicator");
+  if(typing) typing.remove();
+}
+
+function send(){
+  let input = document.getElementById("input");
+  let text = input.value.trim();
+  if(!text) return;
+
+  addMessage(text,"user");
+  input.value = "";
+
+  // tampilkan typing
+  showTyping();
+
+  // delay 5 detik
+  setTimeout(()=>{
+    removeTyping();
+    let reply = aiReply(text);
+    addMessage(reply,"ai");
+  }, 5000); // 5000ms = 5 detik
+}
+
+function aiReply(text){
+  text=text.toLowerCase();
+
+  if(text.includes("main")){
+    return "Apasih kamu ngajak main terus. Emang aku gak punya kerjaan?";
+  }
+
+  if(text.includes("lagi sendiri")){
+    return "Kenapa? Kamu takut sendirian ya?";
+  }
+
+  if(text.includes("kangen")){
+    return "Baru juga kemarin chat, lebay banget sih kamu.";
+  }
+
+  if(text.includes("ngapain")){
+    return "Lagi rebahan. Kenapa emang?";
+  }
+
+  if(text.includes("cantik")){
+    return "Tau. Gak usah dikasih tau juga.";
+  }
+
+  if(text.includes("hi") || text.includes("hallo") 
+  || text.includes("hai") || text.includes("karina") || text.includes("karin"))
+  {
+    let responses = [
+      "hi jugaaaaa.....",
+      "hallo jugaaaaa, kamu mau apa hari inii....", 
+      "hai jugaaaaaA....."
+    ];
+    
+    responses = shuffle(responses);
+    
+    showTyping();
+    
+    setTimeout(()=>{
+      removeTyping();
+      responses.forEach((msg, index) => {
+        setTimeout(()=>{
+          addMessage(msg, "ai");
+        }, 1000 * index);
+      });
+    }, 5000);
+    return null;
+  }
+  
+  if(text.includes("ngentot") || text.includes("ngewe"))
+  {
+  
+    let responses = [
+      "aduhh kamu iniii....",
+      "kamu bikin aku makin sange ajaa yaampuunn.",
+      "sumpah akuu baruu kali ini di ajak beginian sama kamuu zall...",
+      "hmmmm, gimanaa yaaa..."
+    ];
+  
+    responses = shuffle(responses);
+    
+    showTyping();
+
+  // delay awal 5 detik
+  setTimeout(()=>{
+
+    removeTyping();
+
+    responses.forEach((msg, index) => {
+      setTimeout(()=>{
+        addMessage(msg, "ai");
+      }, 1000 * index); // 1 detik antar pesan
+    });
+
+  }, 5000); // 5 detik sebelum mulai kirim
+
+  return null;
+  }
+  return "Hmm? Maksud kamu apa tuh?";
+}
+
+</script>
+
+</body>
+</html>
